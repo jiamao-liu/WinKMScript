@@ -3,3 +3,6 @@ from PIL import ImageGrab,Image
 
 def screenshot(start:Point,end:Point)->Image:
     return ImageGrab.grab(start.x,start.y,end.x,end.y)
+
+def read(path:str)->Image:
+    Image.open()
