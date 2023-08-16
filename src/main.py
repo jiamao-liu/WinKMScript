@@ -1,13 +1,11 @@
 import sys
 import time
 
-import cv2
 from src.constant.KMConstant import *
 from src.tool import ImageTool as it
 from src.tool import MouseTool as mt
 from src.tool import KeyBoardTool as kt
-from src.entity.Point import Point
-import numpy as np
+
 
 
 

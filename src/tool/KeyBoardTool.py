@@ -1,7 +1,4 @@
 import time
-import win32con
-import win32api
-from ctypes import windll
 import pyautogui
 
 def pressKey(key):

@@ -1,5 +1,3 @@
-from src.entity.Point import Point
-from PIL import ImageGrab
 import numpy as np
 import cv2
 from src.constant.KMConstant import *
