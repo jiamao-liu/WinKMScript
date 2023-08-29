@@ -8,6 +8,5 @@ end=Point(500,500)
 
 
 
-BASE_DIR="../resource/targetImg/"
 
 KEY_DICT={"0":48,}
