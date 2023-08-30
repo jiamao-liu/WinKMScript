@@ -4,13 +4,25 @@ from src.constant.KMConstant import *
 import pyautogui
 import time
 import sys
+from src.tool.log import *
 
 class ImgTool:
-    def __init__(self,baseDir:str="../resource/targetImg/"):
-        self.baseDir=baseDir
+    def __init__(self):
+        self.retry=5
+        self.baseDir="../resource/targetImg/"
         self.width,self.height=pyautogui.size()
+        self.maxPos=Point(self.width,self.height)
+        self.minPos=Point(0,0)
+        self.findDelay=0.4
+        self.saveDir="C:/"
+        self.imgThreshold=0.1
 
-    def screenshot(self,start:Point,end:Point):
+
+    def screenshot(self,start:Point=None,end:Point=None):
+        if start==None:
+            start=self.minPos
+        if end==None:
+            end=self.maxPos
         return np.array(pyautogui.screenshot(region=[start.x, start.y, end.x, end.y]))
 
     def read(self,path:str):
@@ -20,7 +32,12 @@ class ImgTool:
         cv2.imshow(title,img)
         cv2.waitKey(0)
     def saveImg(self,filename,img):
+        print(filename)
         cv2.imwrite(filename,img)
+
+    def errorProcess(self,code=0):
+        errImg = self.screenshot()
+        self.saveImg(self.saveDir+"错误代码"+str(code)+".png", errImg)
 
     def findImg(self,source,target)->Point:
         sourceGray = cv2.cvtColor(source, cv2.COLOR_RGB2GRAY)
@@ -28,24 +45,45 @@ class ImgTool:
         dst = cv2.matchTemplate(sourceGray, targetGray,cv2.TM_SQDIFF_NORMED)
         diff,_,(x,y),_=cv2.minMaxLoc(dst)
         print(cv2.minMaxLoc(dst))
-        if diff<IMG_THRESHOLD:
+        if diff<self.imgThreshold:
             return Point(x,y)
         else:
             return Point(-1,-1)
 
-    def operate(self,*args):
+    def operate(self,pos):
         pass
 
-    def action(self,source1,target1,code1,delay1,source2,target2):
-        for n in range(10):
+    def action(self,source1,target1,code1,reOperate=0,check=False,checkStart:Point=None,checkEnd:Point=None,target2=None,code2=-1):
+        if checkStart==None:
+            checkStart=self.minPos
+        if checkEnd==None:
+            checkEnd=self.maxPos
+
+        for n in range(self.retry):
             pos=self.findImg(source1,target1)
-            if n==9 and pos.x==-1:
-                errImg=self.screenshot(Point(0,0),Point(self.width,self.height))
-                self.saveImg(code1,errImg)
-                print("错误代码:"+code1+"请联系客服人员！")
+            if n==self.retry-1 and pos.x==-1:
+                self.errorProcess(code1)
+                log("寻找图像出现错误，错误代码："+str(code1))
                 sys.exit()
+            elif pos.x==-1:
+                time.sleep(self.findDelay*3)
+            else:
+                break
 
-
-        time.sleep(delay1)
-        self.operate()
-        self.findImg(source2,target2)
+        self.operate(pos)
+        if check==False:
+            return
+        for n in range(self.retry):
+            source2=self.screenshot(checkStart,checkEnd)
+            over=self.findImg(source2,target2)
+            log(over)
+            if n==self.retry-1 and over.x==-1:
+                self.errorProcess(code2)
+                log("寻找图像出现错误，错误代码："+str(code2))
+                sys.exit()
+            elif over.x==-1:
+                time.sleep(self.findDelay)
+                if reOperate!=0 and (n+1)%reOperate==0:
+                    self.operate(pos)
+            else:
+                break

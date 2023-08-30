@@ -14,14 +14,15 @@ def move(pos:Point):
 
 def clickLeft():
     time.sleep(MOUSE_DELAY_TIME)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
     win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
+
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
     time.sleep(MOUSE_DELAY_TIME)
 
 def clickRight():
     time.sleep(MOUSE_DELAY_TIME)
-    win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP,0,0,0,0)
     win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTDOWN,0,0,0,0)
+    win32api.mouse_event(win32con.MOUSEEVENTF_RIGHTUP,0,0,0,0)
     time.sleep(MOUSE_DELAY_TIME)
 
 def downLeft():
