@@ -1,5 +1,6 @@
 from src.tool.ImageTool import *
 from src.tool import MouseTool as mt
+
 class MoveAndClick(ImgTool):
     def __init__(self):
         super().__init__()

@@ -1,9 +1,11 @@
 import numpy as np
 import cv2
-from src.constant.KMConstant import *
+
 import pyautogui
 import time
 import sys
+
+from src.entity.Point import Point
 from src.tool.log import *
 
 class ImgTool:
@@ -11,12 +13,14 @@ class ImgTool:
         self.retry=5
         self.baseDir="../resource/targetImg/"
         self.width,self.height=pyautogui.size()
-        self.maxPos=Point(self.width,self.height)
-        self.minPos=Point(0,0)
         self.findDelay=0.4
         self.saveDir="C:/"
-        self.imgThreshold=0.1
+        self.imgThreshold=0.3
 
+        self.maxPos=Point(self.width,self.height)
+        self.minPos=Point(0,0)
+        self.pos1=Point(int(self.width*0.1),int(self.height*0.1))
+        self.pos8=Point(int(self.width*0.8),int(self.height*0.8))
 
     def screenshot(self,start:Point=None,end:Point=None):
         if start==None:
