@@ -2,17 +2,20 @@ import time
 import pyautogui
 class KBTool:
     def __init__(self):
-        self.delay=0.2
-    def pressKey(self,key):
+        self.delay=0.02
+    def pressKey(self,key,haveDelay:bool=True):
         for n in key:
             pyautogui.press(n)
-            time.sleep(self.delay)
+            if haveDelay:
+                time.sleep(self.delay)
 
-    def downKey(self,key):
+    def downKey(self,key,haveDelay:bool=True):
         for n in key:
             pyautogui.keyDown(n)
-            time.sleep(self.delay)
-    def upKey(self,key):
+            if haveDelay:
+                time.sleep(self.delay)
+    def upKey(self,key,haveDelay:bool=True):
         for n in key:
             pyautogui.keyUp(n)
-            time.sleep(self.delay)
+            if haveDelay:
+                time.sleep(self.delay)
