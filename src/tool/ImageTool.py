@@ -1,12 +1,13 @@
 import numpy as np
 import cv2
-
+import datetime
 import pyautogui
-import time
-import sys
+
 
 from src.entity.Point import Point
+from src.tool.EmailTool import SMTP
 from src.tool.log import *
+
 
 class ImgTool:
     def __init__(self):
@@ -16,6 +17,9 @@ class ImgTool:
         self.width,self.height=pyautogui.size()
         self.maxPos=Point(self.width,self.height)
         self.minPos=Point(0,0)
+        self.email=SMTP()
+        self.log_file = 'sys_%s.log' % datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d')
+        setLog(self.saveDir+self.log_file)
 
     def screenshot(self,start:Point=None,end:Point=None):
         if start==None:
@@ -35,14 +39,19 @@ class ImgTool:
 
     def errorProcess(self,code=0):
         errImg = self.screenshot()
-        self.saveImg(self.saveDir+"错误代码"+str(code)+".png", errImg)
+        self.saveImg(self.saveDir+"ERRORCODE-"+str(code)+".png", errImg)
+        fileList=[]
+        fileList.append(self.saveDir+self.log_file)
+        fileList.append(self.saveDir+"ERRORCODE-"+str(code)+".png")
+        self.email.sendEmail(fileList,code)
+
 
     def findImg(self,source,target)->Point:
         sourceGray = cv2.cvtColor(source, cv2.COLOR_RGB2GRAY)
         targetGray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
         dst = cv2.matchTemplate(sourceGray, targetGray,cv2.TM_SQDIFF_NORMED)
         diff,_,(x,y),_=cv2.minMaxLoc(dst)
-        print(cv2.minMaxLoc(dst))
+        log(cv2.minMaxLoc(dst))
         if diff<self.imgThreshold:
             return Point(x,y)
         else:
