@@ -3,7 +3,7 @@ import win32con
 import win32api
 from ctypes import windll
 
-from src.entity.Point import Point
+from entity.Point import Point
 
 
 class MouseTool:

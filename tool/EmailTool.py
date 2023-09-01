@@ -10,11 +10,11 @@ from copy import deepcopy
 
 class SMTP:
     def __init__(self):
-        self.fromEmail="liujiamao2021@163.com"
-        self.toEmail="964723423@qq.com"
-        self.SQM="JJCAAEOYJUHOIGJI"
+        self.fromEmail="filoink@hyperchain.cn"
+        self.toEmail="zhangrui@hyperchain.cn"
+        self.SQM="inM5oaRuTSojWyc8"
     def sendEmail(self,filePathList,code:str):
-        con = smtplib.SMTP_SSL('smtp.163.com', 465)
+        con = smtplib.SMTP_SSL('smtp.exmail.qq.com', 465)
         con.login(self.fromEmail, self.SQM)
         msg = MIMEMultipart()
         subject = Header(code, 'utf-8').encode()

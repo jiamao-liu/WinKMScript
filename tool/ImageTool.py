@@ -4,16 +4,16 @@ import datetime
 import pyautogui
 
 
-from src.entity import *
-from src.tool.EmailTool import *
-from src.tool.log import *
+from entity import *
+from tool.EmailTool import *
+from tool.log import *
 
 
 class ImgTool:
     def __init__(self):
         self.baseDir="C:/_check/img/"
         self.saveDir="C:/_check/log/"
-        self.imgThreshold=0.3
+        self.imgThreshold=0.01
         self.width,self.height=pyautogui.size()
         self.maxPos=Point(self.width,self.height)
         self.minPos=Point(0,0)
@@ -46,13 +46,15 @@ class ImgTool:
         self.email.sendEmail(fileList,code)
 
 
-    def findImg(self,source,target)->Point:
+    def findImg(self,source,target,defaultThreshold=True,threshold=0.1)->Point:
+        if defaultThreshold:
+            threshold=self.imgThreshold
         sourceGray = cv2.cvtColor(source, cv2.COLOR_RGB2GRAY)
         targetGray = cv2.cvtColor(target, cv2.COLOR_BGR2GRAY)
         dst = cv2.matchTemplate(sourceGray, targetGray,cv2.TM_SQDIFF_NORMED)
         diff,_,(x,y),_=cv2.minMaxLoc(dst)
-        log(cv2.minMaxLoc(dst))
-        if diff<self.imgThreshold:
+        log(str(cv2.minMaxLoc(dst)))
+        if diff<threshold:
             return Point(x,y)
         else:
             return Point(-1,-1)
