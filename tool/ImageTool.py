@@ -4,8 +4,8 @@ import datetime
 import pyautogui
 
 
-from src.entity.Point import Point
-from src.tool.EmailTool import SMTP
+from src.entity import *
+from src.tool.EmailTool import *
 from src.tool.log import *
 
 
