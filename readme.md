@@ -27,4 +27,10 @@ C:\_check\log
 `
 C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup文件夹下创建bat文件
 `
-### 文件结构
+### 文件
+- Point：坐标类，主要定义了一些坐标相关的计算
+- EmailTool：邮箱工具类，可以指定标题和附件列表
+- HandleTool：句柄工具类，可以获取句柄，根据句柄控制窗口
+- ImageTool：图形工具类，可以打开，存储，异常处理，图像匹配
+- KeyBoardTool：键盘工具类，控制键盘输入
+- MouseTool：鼠标工具类：鼠标移动，单双击
