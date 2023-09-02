@@ -10,9 +10,9 @@ from copy import deepcopy
 
 class SMTP:
     def __init__(self):
-        self.fromEmail="filoink@hyperchain.cn"
-        self.toEmail="zhangrui@hyperchain.cn"
-        self.SQM="inM5oaRuTSojWyc8"
+        self.fromEmail="发送者邮箱"
+        self.toEmail="接受者邮箱"
+        self.SQM="授权码"
     def sendEmail(self,filePathList,code:str):
         con = smtplib.SMTP_SSL('smtp.exmail.qq.com', 465)
         con.login(self.fromEmail, self.SQM)
